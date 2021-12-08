@@ -4,36 +4,39 @@
 #include <QGraphicsScene>
 #include <QVector>
 
-#include "cubieview.h"
+#include "CubieView.h"
 
 class FaceView
 {
 public:
-    FaceView(QGraphicsScene *scene, int x, int y, QChar color);
-    QVector<QVector<CubieView*>> cubies;
-    QString const getFace();
-    void setFace(QString input);
-    void update();
+    FaceView(QGraphicsScene *scene, int x, int y)
+    {
+        // create cubies and add them to the scene
+        for (int i = 0; i < 3; i++) {
+            QVector<CubieView*> temp;
+            for (int j = 0; j < 3; j++) {
+                temp.push_back(new CubieView(x + i*SIDE_LENGTH,y + j*SIDE_LENGTH));
+                scene->addItem(temp[j]);
+            }
+            cubies.push_back(temp);
+        }
+    }
 
-    void rotate();
-    void rotateCCW();
-
-    QVector<QChar> const getTop();
-    QVector<QChar> const getBottom();
-    QVector<QChar> const getLeft();
-
-    void topTurn(QVector<QChar> input);
-    QVector<QChar> topTurn(QVector<QChar> input, int in);
-    void bottomTurn(QVector<QChar> input);
-    QVector<QChar> bottomTurn(QVector<QChar> input, int in);
-    void leftTurn(QVector<QChar> input);
-    QVector<QChar> leftTurn(QVector<QChar> input, int in);
-    QVector<QChar> rightTurn(QVector<QChar> input, int in);
+    void setFace(QString input)
+    {
+        int position = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                cubies[j][i]->setColor(input.at(position));
+                position++;
+            }
+        }
+    }
 
 private:
     const int SIDE_LENGTH = 45;
-    void setCubies(QVector<CubieView*> input);
-    void cyclic_roll(CubieView* &a, CubieView* &b, CubieView* &c, CubieView* &d);
+    QVector<QVector<CubieView*>> cubies;
+    //void setCubies(QVector<CubieView*> input);
 };
 
 #endif // FACEVIEW_H

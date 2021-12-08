@@ -1,17 +1,18 @@
 #ifndef RANDOMGENERATOR_H
 #define RANDOMGENERATOR_H
 
+#include <vector>
 #include <random>
 #include <time.h>
-#include <QVector>
+
 
 
 class RandomGenerator
 {
 public:
     RandomGenerator() {}
-    QVector<int> getRand() {
-        QVector<int> randNums;
+    std::vector<int> getRand() {
+        std::vector<int> randNums;
         time_t timer;
         struct tm y2k = {0};
         double seconds;
@@ -21,7 +22,6 @@ public:
         time(&timer);
 
         seconds = difftime(timer,mktime(&y2k));
-
 
         std::mt19937 rng;
         rng.seed(seconds);
@@ -35,13 +35,14 @@ public:
     }
 
     /*
-     * There are 12 possible moves (F, F', B, B', U, U', D, D', L, L', R, R')
+     * There are 12 possible moves (F, F', B, B', U, U', D, D', L, L', R, R') [0,11] is the range for valid turns
      *          - 20 moves are required to get a good scramble (God's Number)
      *          - I will use 25 just to be safe
      *          - getScramble will generate a vector of 25 ints [0,11] that represent the turns to scramble
      *          - doScramble will actually implement the generated scramble sequence starting at the back of the vector
      */
 private:
+    //How many random turns to return
     int const NUM_TURNS = 10;
 };
 

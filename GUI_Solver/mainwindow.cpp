@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Add cube to the scene
     scene = new QGraphicsScene(0,0,600,400);
-    cube = new CubeView(scene);
+    cubeView = new CubeView(scene, QString::fromStdString(cube.toString()));
     ui->cubeView->setScene(scene);
 
     //Set up push buttons
@@ -38,78 +38,77 @@ MainWindow::~MainWindow()
 void MainWindow::inputBtnHandle()
 {
     if (!ui->inputCubeText->toPlainText().isEmpty()) {
-        cube->setCube(ui->inputCubeText->toPlainText());
-        ui->currCubeText->setText(ui->inputCubeText->toPlainText());
-        cube->update();
+        //cube->setCube(ui->inputCubeText->toPlainText());
+        //ui->currCubeText->setText(ui->inputCubeText->toPlainText());
+        //cube->update();
     }
     else {
-        QString output = cube->getCube();
-        ui->currCubeText->setText(output);
+        ui->currCubeText->setText(QString::fromStdString(cube.toString()));
     }
 }
 
 void MainWindow::resetBtnHandle()
 {
-    cube->reset();
+    //cube->reset();
     ui->scrambleOutput->setText("");
-    cube->update();
+    //cube->update();
 }
 
 void MainWindow::scrambleBtnHandle()
 {
-    ui->scrambleOutput->setText(cube->scramble());
-    cube->update();
+    //ui->scrambleOutput->setText(cube->scramble());
+    //cube->update();
 }
 
 void MainWindow::FBtnHandle()
 {
-    cube->fTurn();
-    cube->update();
+    cube.f();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 
 void MainWindow::FprimeBtnHandle()
 {
-    cube->fprimeTurn();
-    cube->update();
+    cube.fPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 
 void MainWindow::BBtnHandle() {
-    cube->bTurn();
-    cube->update();
+    cube.b();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::BprimeBtnHandle(){
-    cube->bprimeTurn();
-    cube->update();
+    cube.bPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::UBtnHandle(){
-    cube->uTurn();
-    cube->update();
+    cube.u();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::UprimeBtnHandle(){
-    cube->uprimeTurn();
-    cube->update();
+    cube.uPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::DBtnHandle(){
-    cube->dTurn();
-    cube->update();
+    cube.d();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::DprimeBtnHandle(){
-    cube->dprimeTurn();
-    cube->update();
+    cube.dPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::LBtnHandle(){
-    cube->lTurn();
-    cube->update();
+    cube.l();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::LprimeBtnHandle(){
-    cube->lprimeTurn();
-    cube->update();
+    cube.lPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::RBtnHandle(){
-    cube->rTurn();
-    cube->update();
+    cube.r();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 void MainWindow::RprimeBtnHandle(){
-    cube->rprimeTurn();
-    cube->update();
+    cube.rPrime();
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }

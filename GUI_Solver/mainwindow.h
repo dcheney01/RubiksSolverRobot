@@ -10,6 +10,7 @@
 #include "CubeView.h"
 #include "CubieView.h"
 #include "FaceView.h"
+#include "CubeModel.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,7 @@ private slots:
     void inputBtnHandle();
     void resetBtnHandle();
     void scrambleBtnHandle();
+
     void FBtnHandle();
     void FprimeBtnHandle();
     void BBtnHandle();
@@ -44,6 +46,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsView *view;
     QGraphicsScene *scene;
-    CubeView *cube;
+    CubeView *cubeView;
+    CubeModel cube;
 };
 #endif // MAINWINDOW_H

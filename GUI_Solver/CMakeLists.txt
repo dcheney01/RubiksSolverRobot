@@ -18,21 +18,25 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools REQUIRED)
 set(TS_FILES RubiksCubeGUI_en_US.ts)
 
 set(PROJECT_SOURCES
+        # Qt Files
         main.cpp
+        mainwindow.h
         mainwindow.cpp
         mainwindow.ui
-        CubieView.cpp
-        FaceView.cpp
-        CubeView.cpp
-        mainwindow.h
-        CubieView.h
-        FaceView.h
+
+        # Cube Display Files
         CubeView.h
-        RandomGenerator.h
+        FaceView.h
+        CubieView.h
+
+        #Solver Files
         CubeModel.cpp
         CubeModel.h
-        CubeException.cpp
+
+        # Util Files
         CubeException.h
+        RandomGenerator.h
+
         ${TS_FILES}
 )
 
