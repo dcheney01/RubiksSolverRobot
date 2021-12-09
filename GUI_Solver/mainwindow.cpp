@@ -49,15 +49,14 @@ void MainWindow::inputBtnHandle()
 
 void MainWindow::resetBtnHandle()
 {
-    //cube->reset();
     ui->scrambleOutput->setText("");
-    //cube->update();
+    cubeView->setCube(QString::fromStdString(cube.reset()));
 }
 
 void MainWindow::scrambleBtnHandle()
 {
-    //ui->scrambleOutput->setText(cube->scramble());
-    //cube->update();
+    ui->scrambleOutput->setText(QString::fromStdString(cube.scramble()));
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 
 void MainWindow::FBtnHandle()

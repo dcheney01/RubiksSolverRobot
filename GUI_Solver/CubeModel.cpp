@@ -5,6 +5,11 @@
 */
 CubeModel::CubeModel()
 {
+    reset();
+}
+
+std::string CubeModel::reset()
+{
     // Edges.
     for (unsigned i = 0; i < 12; ++i)
     {
@@ -26,6 +31,20 @@ CubeModel::CubeModel()
     this->centers[3] = COLOR::WHITE;
     this->centers[4] = COLOR::BLUE;
     this->centers[5] = COLOR::RED;
+
+    return toString();
+}
+
+std::string CubeModel::scramble()
+{
+    std::string output = "";
+    std::vector<int> moves = rand.getRand();
+    for (auto i : moves) {
+        move(static_cast<MOVE>(i));
+        output += getMove(static_cast<MOVE>(i)) + " ";
+    }
+
+    return output;
 }
 
 CubeModel& CubeModel::move(MOVE ind)
@@ -112,7 +131,7 @@ std::string CubeModel::getMove(MOVE ind) const
     case MOVE::R:
       return "R";
     case MOVE::RPRIME:
-      return "R2";
+      return "R'";
     case MOVE::U:
       return "U";
     case MOVE::UPRIME:
@@ -545,55 +564,47 @@ CubeModel::COLOR CubeModel::getColor(
 }
 
 
-/*
-* Helper to update the orientation of corners on 90-degree CW twist.
-* @param ind The corner index to update.
-* @param amount The amount to update the orientation by: 1, or 2.
+/**
+* Helper to update the orientation of corners on an L or R turn.
 */
-inline void CubeModel::updateCornerOrientation(CORNER ind)
+inline void CubeModel::updateCornerOrientationX(CORNER ind)
 {
     Cubie& corner = this->corners[(unsigned)ind];
 
-    // For 90-degree twists that change the orientation of corners, half of the
-    // corners change orientation by 1 (0->1, 1->2, 2->0) and the other half
-    // change by 2 (0->2, 1->0, 2->1 [mod 3]).
-    // Orientation 0: Red or orange on top or bottom.
-    // Orientation 1: Red or orange is twisted clockwise from its nearest up or
-    // down face.
-    // Orientation 2: Red or orange is twisted counterclockwise from its
-    // nearest up or down face.
+    // The new orientation differs based on its distance from home.  E.g.
+    // moving corner 0 (RBY) left moves it from ULB (0) to ULF (3).  That's an
+    // odd distance (0+3), so the orientation is 1 (Y on top).  Moving corner 0
+    // (RBY) left prime from ULF (3) to ULB (0) is even (0+0), so the
+    // orientation is 2.
+    bool evenDist = ((uint8_t)ind + corner.index) % 2 == 0;
 
     if (corner.orientation == 0)
-      corner.orientation = 2;
-    else if (corner.orientation >= 2)
-      corner.orientation = 0;
-}
+      corner.orientation = evenDist ? 2 : 1;
+    else if (corner.orientation == 1)
+      corner.orientation = evenDist ? 0 : 2;
+    else // if (corner.orientation == 2)
+      corner.orientation = evenDist ? 1 : 0;
+    }
 
-/*
-* Helper to update the orientation of corners on 90-degree CW twist for an L or R turn.
-* @param ind The corner index to update.
-* @param amount The amount to update the orientation by: 1, or 2.
-*/
-inline void CubeModel::updateLRCornerOrientation(
-CORNER ind, uint8_t amount)
+/**
+ * Helper to update the orientation of corners on an F or B turn.
+ */
+inline void CubeModel::updateCornerOrientationZ(CORNER ind)
 {
-    Cubie& corner = this->corners[(unsigned)ind];
+  Cubie& corner = this->corners[(unsigned)ind];
 
-    // For 90-degree twists that change the orientation of corners, half of the
-    // corners change orientation by 1 (0->1, 1->2, 2->0) and the other half
-    // change by 2 (0->2, 1->0, 2->1 [mod 3]).
-    // Orientation 0: Red or orange on top or bottom.
-    // Orientation 1: Red or orange is twisted clockwise from its nearest up or
-    // down face.
-    // Orientation 2: Red or orange is twisted counterclockwise from its
-    // nearest up or down face.
-    corner.orientation += amount;
+  // Moving corner 3 (RBW) front moves it from ULF (3) to URF (2).  That's an
+  // odd distance (3+2), so the orientation is 2 (B on top).  Moving corner 3
+  // (RBW) front prime from URF (2) to ULF (3) is even (3+3), so the
+  // orientation is 1.
+  bool evenDist = ((uint8_t)ind + corner.index) % 2 == 0;
 
-    // % 3, but a bit faster.
-    if (corner.orientation == 3)
-      corner.orientation = 0;
-    else if (corner.orientation > 3)
-      corner.orientation = 0;
+  if (corner.orientation == 0)
+    corner.orientation = evenDist ? 1 : 2;
+  else if (corner.orientation == 1)
+    corner.orientation = evenDist ? 2 : 0;
+  else // if (corner.orientation == 2)
+    corner.orientation = evenDist ? 0 : 1;
 }
 
 /**
@@ -619,10 +630,10 @@ CubeModel& CubeModel::f()
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = hold;
 
-    this->updateCornerOrientation(CORNER::ULF);
-    this->updateCornerOrientation(CORNER::URF);
-    this->updateCornerOrientation(CORNER::DRF);
-    this->updateCornerOrientation(CORNER::DLF);
+    this->updateCornerOrientationZ(CORNER::ULF);
+    this->updateCornerOrientationZ(CORNER::URF);
+    this->updateCornerOrientationZ(CORNER::DRF);
+    this->updateCornerOrientationZ(CORNER::DLF);
 
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
@@ -646,10 +657,10 @@ CubeModel& CubeModel::fPrime()
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FL];
     this->edges[(unsigned)EDGE::FL]      = hold;
 
-    this->updateCornerOrientation(CORNER::ULF);
-    this->updateCornerOrientation(CORNER::URF);
-    this->updateCornerOrientation(CORNER::DRF);
-    this->updateCornerOrientation(CORNER::DLF);
+    this->updateCornerOrientationZ(CORNER::ULF);
+    this->updateCornerOrientationZ(CORNER::URF);
+    this->updateCornerOrientationZ(CORNER::DRF);
+    this->updateCornerOrientationZ(CORNER::DLF);
 
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
@@ -674,10 +685,10 @@ CubeModel& CubeModel::b()
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BL];
     this->edges[(unsigned)EDGE::BL]      = hold;
 
-    this->updateCornerOrientation(CORNER::ULB);
-    this->updateCornerOrientation(CORNER::URB);
-    this->updateCornerOrientation(CORNER::DRB);
-    this->updateCornerOrientation(CORNER::DLB);
+    this->updateCornerOrientationZ(CORNER::ULB);
+    this->updateCornerOrientationZ(CORNER::URB);
+    this->updateCornerOrientationZ(CORNER::DRB);
+    this->updateCornerOrientationZ(CORNER::DLB);
 
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
@@ -701,10 +712,10 @@ CubeModel& CubeModel::bPrime()
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = hold;
 
-    this->updateCornerOrientation(CORNER::ULB);
-    this->updateCornerOrientation(CORNER::URB);
-    this->updateCornerOrientation(CORNER::DRB);
-    this->updateCornerOrientation(CORNER::DLB);
+    this->updateCornerOrientationZ(CORNER::ULB);
+    this->updateCornerOrientationZ(CORNER::URB);
+    this->updateCornerOrientationZ(CORNER::DRB);
+    this->updateCornerOrientationZ(CORNER::DLB);
 
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
@@ -728,10 +739,10 @@ CubeModel& CubeModel::l()
     this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::UL];
     this->edges[(unsigned)EDGE::UL]      = hold;
 
-    this->updateLRCornerOrientation(CORNER::DLB, 1);
-    this->updateLRCornerOrientation(CORNER::DLF, 2);
-    this->updateLRCornerOrientation(CORNER::ULF, 1);
-    this->updateLRCornerOrientation(CORNER::ULB, 2);
+    this->updateCornerOrientationX(CORNER::DLB);
+    this->updateCornerOrientationX(CORNER::DLF);
+    this->updateCornerOrientationX(CORNER::ULF);
+    this->updateCornerOrientationX(CORNER::ULB);
 
     return *this;
 }
@@ -750,10 +761,10 @@ CubeModel& CubeModel::lPrime()
     this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::DL];
     this->edges[(unsigned)EDGE::DL]      = hold;
 
-    this->updateLRCornerOrientation(CORNER::DLB, 1);
-    this->updateLRCornerOrientation(CORNER::DLF, 2);
-    this->updateLRCornerOrientation(CORNER::ULF, 1);
-    this->updateLRCornerOrientation(CORNER::ULB, 2);
+    this->updateCornerOrientationX(CORNER::DLB);
+    this->updateCornerOrientationX(CORNER::DLF);
+    this->updateCornerOrientationX(CORNER::ULF);
+    this->updateCornerOrientationX(CORNER::ULB);
 
     return *this;
 }
@@ -772,10 +783,10 @@ CubeModel& CubeModel::r()
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = hold;
 
-    this->updateLRCornerOrientation(CORNER::DRB, 1);
-    this->updateLRCornerOrientation(CORNER::DRF, 2);
-    this->updateLRCornerOrientation(CORNER::URF, 1);
-    this->updateLRCornerOrientation(CORNER::URB, 2);
+    this->updateCornerOrientationX(CORNER::DRB);
+    this->updateCornerOrientationX(CORNER::DRF);
+    this->updateCornerOrientationX(CORNER::URF);
+    this->updateCornerOrientationX(CORNER::URB);
 
     return *this;
 }
@@ -794,10 +805,10 @@ CubeModel& CubeModel::rPrime()
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::UR];
     this->edges[(unsigned)EDGE::UR]      = hold;
 
-    this->updateLRCornerOrientation(CORNER::DRB, 1);
-    this->updateLRCornerOrientation(CORNER::DRF, 0);
-    this->updateLRCornerOrientation(CORNER::URF, 1);
-    this->updateLRCornerOrientation(CORNER::URB, 0);
+    this->updateCornerOrientationX(CORNER::DRB);
+    this->updateCornerOrientationX(CORNER::DRF);
+    this->updateCornerOrientationX(CORNER::URF);
+    this->updateCornerOrientationX(CORNER::URB);
 
     return *this;
 }
