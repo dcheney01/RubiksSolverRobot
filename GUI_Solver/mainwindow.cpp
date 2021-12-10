@@ -38,9 +38,9 @@ MainWindow::~MainWindow()
 void MainWindow::inputBtnHandle()
 {
     if (!ui->inputCubeText->toPlainText().isEmpty()) {
-        //cube->setCube(ui->inputCubeText->toPlainText());
-        //ui->currCubeText->setText(ui->inputCubeText->toPlainText());
-        //cube->update();
+//        cube.setCube(ui->inputCubeText->toPlainText());
+//        ui->currCubeText->setText(ui->inputCubeText->toPlainText());
+//        cubeView->setCube(QString::fromStdString(cube.toString()));
     }
     else {
         ui->currCubeText->setText(QString::fromStdString(cube.toString()));

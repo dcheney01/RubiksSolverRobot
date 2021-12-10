@@ -81,6 +81,7 @@ class CubeModel
     std::string getMove(MOVE ind) const;
     std::string reset();
     std::string scramble();
+    void setCube();
 
     // Indexing methods.
     uint8_t getEdgeIndex(EDGE ind) const;
