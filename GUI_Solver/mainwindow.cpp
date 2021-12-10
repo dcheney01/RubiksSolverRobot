@@ -38,9 +38,9 @@ MainWindow::~MainWindow()
 void MainWindow::inputBtnHandle()
 {
     if (!ui->inputCubeText->toPlainText().isEmpty()) {
-        //cube->setCube(ui->inputCubeText->toPlainText());
-        //ui->currCubeText->setText(ui->inputCubeText->toPlainText());
-        //cube->update();
+//        cube.setCube(ui->inputCubeText->toPlainText());
+//        ui->currCubeText->setText(ui->inputCubeText->toPlainText());
+//        cubeView->setCube(QString::fromStdString(cube.toString()));
     }
     else {
         ui->currCubeText->setText(QString::fromStdString(cube.toString()));
@@ -49,15 +49,14 @@ void MainWindow::inputBtnHandle()
 
 void MainWindow::resetBtnHandle()
 {
-    //cube->reset();
     ui->scrambleOutput->setText("");
-    //cube->update();
+    cubeView->setCube(QString::fromStdString(cube.reset()));
 }
 
 void MainWindow::scrambleBtnHandle()
 {
-    //ui->scrambleOutput->setText(cube->scramble());
-    //cube->update();
+    ui->scrambleOutput->setText(QString::fromStdString(cube.scramble()));
+    cubeView->setCube(QString::fromStdString(cube.toString()));
 }
 
 void MainWindow::FBtnHandle()

@@ -36,22 +36,31 @@
       <x>10</x>
       <y>440</y>
       <width>631</width>
-      <height>81</height>
+      <height>91</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2" rowstretch="5,5,0">
+    <layout class="QGridLayout" name="gridLayout_2" rowstretch="5,5,0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetMaximumSize</enum>
      </property>
      <property name="spacing">
       <number>3</number>
      </property>
+     <item row="1" column="1">
+      <widget class="QTextBrowser" name="currCubeText"/>
+     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="currCubeLabel">
        <property name="text">
         <string>Current Cube State</string>
        </property>
       </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QTextBrowser" name="scrambleOutput"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPlainTextEdit" name="inputCubeText"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="inputStringLabel">
@@ -60,21 +69,22 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QPlainTextEdit" name="inputCubeText"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QTextBrowser" name="currCubeText"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QTextBrowser" name="scrambleOutput"/>
-     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="scrambleLabel">
        <property name="text">
         <string>Scramble Moves</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="solutionLabel">
+       <property name="text">
+        <string>Solution</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QTextBrowser" name="solutionOutput"/>
      </item>
     </layout>
    </widget>
@@ -126,7 +136,7 @@
      <rect>
       <x>650</x>
       <y>160</y>
-      <width>131</width>
+      <width>168</width>
       <height>201</height>
      </rect>
     </property>

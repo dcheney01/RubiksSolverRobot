@@ -5,11 +5,12 @@
 #include <iomanip>
 
 #include "CubeException.h"
+#include "RandomGenerator.h"
 #include <cstdint>
 #include <string>
 #include <array>
 #include <algorithm>
-#include <cstdint>
+#include <vector>
 
 /**
  * A RubiksCubeModel that is optimized for fast moves and pattern database
@@ -45,7 +46,7 @@ class CubeModel
     enum class COLOR  : uint8_t {ORANGE, YELLOW, GREEN, WHITE, BLUE, RED};
     enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
     enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
-    enum class MOVE   : uint8_t //removed X2 turns for now
+    enum class MOVE   : uint8_t //removed X2 and slices for now
     {
       L, LPRIME,
       R, RPRIME,
@@ -59,8 +60,10 @@ class CubeModel
     std::array<Cubie, 8>  corners;
     std::array<COLOR, 6>  centers;
 
-    inline void updateCornerOrientation(CubeModel::CORNER ind);
-    inline void updateLRCornerOrientation(CORNER ind, uint8_t amount);
+    RandomGenerator rand;
+
+    inline void updateCornerOrientationX(CORNER ind);
+    inline void updateCornerOrientationZ(CORNER ind);
     inline void updateEdgeOrientationZ(EDGE ind);
 
     char getColor(COLOR color) const;
@@ -76,6 +79,9 @@ class CubeModel
     std::string toString() const;
     bool isSolved() const;
     std::string getMove(MOVE ind) const;
+    std::string reset();
+    std::string scramble();
+    void setCube();
 
     // Indexing methods.
     uint8_t getEdgeIndex(EDGE ind) const;

@@ -43,7 +43,7 @@ public:
      */
 private:
     //How many random turns to return
-    int const NUM_TURNS = 10;
+    int const NUM_TURNS = 25;
 };
 
 #endif // RANDOMGENERATOR_H
