@@ -11,7 +11,6 @@ class FaceView
 public:
     FaceView(QGraphicsScene *scene, int x, int y)
     {
-        // create cubies and add them to the scene
         for (int i = 0; i < 3; i++) {
             QVector<CubieView*> temp;
             for (int j = 0; j < 3; j++) {
@@ -36,7 +35,6 @@ public:
 private:
     const int SIDE_LENGTH = 45;
     QVector<QVector<CubieView*>> cubies;
-    //void setCubies(QVector<CubieView*> input);
 };
 
 #endif // FACEVIEW_H
