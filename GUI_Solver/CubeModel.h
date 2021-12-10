@@ -1,9 +1,6 @@
 #ifndef CUBEMODEL_H
 #define CUBEMODEL_H
 
-#include <iostream>
-#include <iomanip>
-
 #include "CubeException.h"
 #include "RandomGenerator.h"
 #include <cstdint>
