@@ -33,24 +33,26 @@
 
 class CubeModel
 {
+   public:
+      enum class FACE   : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+      enum class COLOR  : uint8_t {ORANGE, YELLOW, GREEN, WHITE, BLUE, RED};
+      enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
+      enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
+      enum class MOVE   : uint8_t
+      {
+        L, LPRIME,
+        R, RPRIME,
+        U, UPRIME,
+        D, DPRIME,
+        F, FPRIME,
+        B, BPRIME,
+      };
+
   private:
     struct Cubie
     {
       uint8_t index;                    // 0 - 11 for edges, 0 - 7 for corners.
       uint8_t orientation;              // 0 - 1 for edges, 0 - 2 for corners.
-    };
-    enum class FACE   : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-    enum class COLOR  : uint8_t {ORANGE, YELLOW, GREEN, WHITE, BLUE, RED};
-    enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
-    enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
-    enum class MOVE   : uint8_t //removed X2 and slices for now
-    {
-      L, LPRIME,
-      R, RPRIME,
-      U, UPRIME,
-      D, DPRIME,
-      F, FPRIME,
-      B, BPRIME,
     };
 
     std::array<Cubie, 12> edges;
@@ -69,7 +71,6 @@ class CubeModel
 
     std::array<COLOR, 2> getEdgeColors(EDGE ind) const;
     std::array<COLOR, 3> getCornerColors(CORNER ind) const;
-    COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
   public:
     CubeModel();
@@ -85,6 +86,8 @@ class CubeModel
     uint8_t getEdgeOrientation(EDGE ind) const;
     uint8_t getCornerIndex(CORNER ind) const;
     uint8_t getCornerOrientation(CORNER ind) const;
+
+    COLOR getColor(FACE face, unsigned row, unsigned col) const;
 
     CubeModel& move(MOVE ind);
     CubeModel& invert(MOVE ind);

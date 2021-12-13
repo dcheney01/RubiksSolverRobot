@@ -9,7 +9,7 @@
 /*
  * There are 12 possible moves (F, F', B, B', U, U', D, D', L, L', R, R') [0,11] is the range for valid turns
  *          - 20 moves are required to get a good scramble (God's Number)
- *          - I will use 25 just to be safe
+ *          - I will use 100 because that is what Korf uses in his paper
  *          - getScramble will generate a vector of 25 ints [0,11] that represent the turns to scramble
  *          - doScramble will actually implement the generated scramble sequence starting at the back of the vector
  */
@@ -43,7 +43,7 @@ public:
 
 private:
     //How many random turns to return
-    int const NUM_TURNS = 25;
+    int const NUM_TURNS = 100;
 };
 
 #endif // RANDOMGENERATOR_H

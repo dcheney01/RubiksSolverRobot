@@ -29,9 +29,15 @@ set(PROJECT_SOURCES
         FaceView.h
         CubieView.h
 
-        #Solver Files
+        #Model Files
         CubeModel.cpp
         CubeModel.h
+
+        #Solver Files
+        goalsingleton.cpp
+        goalsingleton.h
+        Solver.cpp
+        Solver.h
 
         # Util Files
         CubeException.h
