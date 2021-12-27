@@ -34,10 +34,10 @@ set(PROJECT_SOURCES
         CubeModel.h
 
         #Solver Files
-        goalsingleton.cpp
-        goalsingleton.h
         Solver.cpp
         Solver.h
+        movesimplify.cpp
+        movesimplify.h
 
         # Util Files
         CubeException.h

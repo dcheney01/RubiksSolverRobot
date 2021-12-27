@@ -2,6 +2,7 @@
 #define RANDOMGENERATOR_H
 
 #include <vector>
+using std::vector;
 #include <random>
 #include <time.h>
 
@@ -18,8 +19,8 @@ class RandomGenerator
 {
 public:
     RandomGenerator() {}
-    std::vector<int> getRand() {
-        std::vector<int> randNums;
+    vector<int> getRand() {
+        vector<int> randNums;
         time_t timer;
         struct tm y2k = {0};
         double seconds;
@@ -32,7 +33,7 @@ public:
 
         std::mt19937 rng;
         rng.seed(seconds);
-        std::uniform_int_distribution<std::mt19937::result_type> uint_dist10(0,11);
+        std::uniform_int_distribution<std::mt19937::result_type> uint_dist10(0,17);
 
         for(int i = 0; i < NUM_TURNS; i++) {
             randNums.push_back(uint_dist10(rng));
@@ -43,7 +44,7 @@ public:
 
 private:
     //How many random turns to return
-    int const NUM_TURNS = 100;
+    int const NUM_TURNS = 25;
 };
 
 #endif // RANDOMGENERATOR_H
