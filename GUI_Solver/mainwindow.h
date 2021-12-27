@@ -6,11 +6,15 @@
 #include <QGraphicsView>
 #include <QPushButton>
 #include <QTextBrowser>
+#include <QDebug>
+#include <chrono>
 
 #include "CubeView.h"
 #include "CubieView.h"
 #include "FaceView.h"
 #include "CubeModel.h"
+#include "Solver.h"
+#include "movesimplify.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +32,8 @@ private slots:
     void inputBtnHandle();
     void resetBtnHandle();
     void scrambleBtnHandle();
+    void solveBtnHandle();
+    void applySolveBtnHandle();
 
     void FBtnHandle();
     void FprimeBtnHandle();
@@ -41,6 +47,12 @@ private slots:
     void LprimeBtnHandle();
     void RBtnHandle();
     void RprimeBtnHandle();
+    void F2BtnHandle();
+    void B2BtnHandle();
+    void U2BtnHandle();
+    void D2BtnHandle();
+    void L2BtnHandle();
+    void R2BtnHandle();
 
 private:
     Ui::MainWindow *ui;
@@ -48,5 +60,6 @@ private:
     QGraphicsScene *scene;
     CubeView *cubeView;
     CubeModel cube;
+    Solver* solver;
 };
 #endif // MAINWINDOW_H

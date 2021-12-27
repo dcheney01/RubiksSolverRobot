@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
-    <height>560</height>
+    <width>863</width>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@
       <x>10</x>
       <y>440</y>
       <width>631</width>
-      <height>91</height>
+      <height>181</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2" rowstretch="5,5,0,0">
@@ -47,7 +47,14 @@
       <number>3</number>
      </property>
      <item row="1" column="1">
-      <widget class="QTextBrowser" name="currCubeText"/>
+      <widget class="QTextBrowser" name="currCubeText">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="currCubeLabel">
@@ -57,10 +64,30 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QTextBrowser" name="scrambleOutput"/>
+      <widget class="QTextBrowser" name="scrambleOutput">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QPlainTextEdit" name="inputCubeText"/>
+      <widget class="QPlainTextEdit" name="inputCubeText">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>80</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="inputStringLabel">
@@ -93,11 +120,18 @@
      <rect>
       <x>650</x>
       <y>10</y>
-      <width>131</width>
-      <height>121</height>
+      <width>201</width>
+      <height>141</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
+     <item row="2" column="0">
+      <widget class="QPushButton" name="solveBtn">
+       <property name="text">
+        <string>SOLVE</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="inputDoneBtn">
        <property name="autoFillBackground">
@@ -108,24 +142,24 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="4" column="0">
+      <widget class="QPushButton" name="resetBtn">
+       <property name="text">
+        <string>RESET</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QPushButton" name="scrambleBtn">
        <property name="text">
         <string>SCRAMBLE</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="solveBtn">
-       <property name="text">
-        <string>SOLVE</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0">
-      <widget class="QPushButton" name="resetBtn">
+      <widget class="QPushButton" name="applySolveBtn">
        <property name="text">
-        <string>RESET</string>
+        <string>APPLY SOLVE MOVES</string>
        </property>
       </widget>
      </item>
@@ -136,7 +170,7 @@
      <rect>
       <x>650</x>
       <y>160</y>
-      <width>168</width>
+      <width>201</width>
       <height>201</height>
      </rect>
     </property>
@@ -151,17 +185,31 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="UBtn">
-       <property name="text">
-        <string>U</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="1">
       <widget class="QPushButton" name="DprimeBtn">
        <property name="text">
         <string>D'</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="FprimeBtn">
+       <property name="text">
+        <string>F'</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="LBtn">
+       <property name="text">
+        <string>L</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QPushButton" name="RprimeBtn">
+       <property name="text">
+        <string>R'</string>
        </property>
       </widget>
      </item>
@@ -179,24 +227,24 @@
        </property>
       </widget>
      </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="LprimeBtn">
+       <property name="text">
+        <string>L'</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="UBtn">
+       <property name="text">
+        <string>U</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="FBtn">
        <property name="text">
         <string>F</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="LBtn">
-       <property name="text">
-        <string>L</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="FprimeBtn">
-       <property name="text">
-        <string>F'</string>
        </property>
       </widget>
      </item>
@@ -214,17 +262,85 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QPushButton" name="LprimeBtn">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="F2Btn">
        <property name="text">
-        <string>L'</string>
+        <string>F2</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
-      <widget class="QPushButton" name="RprimeBtn">
+     <item row="1" column="2">
+      <widget class="QPushButton" name="B2Btn">
        <property name="text">
-        <string>R'</string>
+        <string>B2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="U2Btn">
+       <property name="text">
+        <string>U2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="D2Btn">
+       <property name="text">
+        <string>D2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="L2Btn">
+       <property name="text">
+        <string>L2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QPushButton" name="R2Btn">
+       <property name="text">
+        <string>R2</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>530</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Number of Moves:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Time to Solve (ms):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="timeToSolve">
+       <property name="text">
+        <string>0.0</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="numMoves">
+       <property name="text">
+        <string>0</string>
        </property>
       </widget>
      </item>
@@ -236,7 +352,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>803</width>
+     <width>863</width>
      <height>21</height>
     </rect>
    </property>

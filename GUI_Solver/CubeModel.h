@@ -1,16 +1,18 @@
 #ifndef CUBEMODEL_H
 #define CUBEMODEL_H
 
+#include <string>
+using std::string;
+#include <array>
+using std::array;
+#include <vector>
+using std::vector;
+
 #include "CubeException.h"
 #include "RandomGenerator.h"
-#include <cstdint>
-#include <string>
-#include <array>
-#include <algorithm>
-#include <vector>
 
 /**
- * A RubiksCubeModel that is optimized for fast moves and pattern database
+ * A CubeModelModel that is optimized for fast moves and pattern database
  * indexing.  It stores each cubie as an index and orientation, with edges
  * and corners in separate arrays.
  *
@@ -33,80 +35,80 @@
 
 class CubeModel
 {
+   public:
+      enum class FACE   : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
+      enum class COLOR  : uint8_t {ORANGE, YELLOW, GREEN, WHITE, BLUE, RED};
+      enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
+      enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
+      enum class MOVE   : uint8_t
+      {
+        L, LPRIME, L2,
+        R, RPRIME, R2,
+        U, UPRIME, U2,
+        D, DPRIME, D2,
+        F, FPRIME, F2,
+        B, BPRIME, B2,
+      };
+
   private:
     struct Cubie
     {
       uint8_t index;                    // 0 - 11 for edges, 0 - 7 for corners.
       uint8_t orientation;              // 0 - 1 for edges, 0 - 2 for corners.
     };
-    enum class FACE   : uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-    enum class COLOR  : uint8_t {ORANGE, YELLOW, GREEN, WHITE, BLUE, RED};
-    enum class EDGE   : uint8_t {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR};
-    enum class CORNER : uint8_t {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF};
-    enum class MOVE   : uint8_t //removed X2 and slices for now
-    {
-      L, LPRIME,
-      R, RPRIME,
-      U, UPRIME,
-      D, DPRIME,
-      F, FPRIME,
-      B, BPRIME,
-    };
 
-    std::array<Cubie, 12> edges;
-    std::array<Cubie, 8>  corners;
-    std::array<COLOR, 6>  centers;
-
-    RandomGenerator rand;
+    array<Cubie, 12> edges;
+    array<Cubie, 8>  corners;
+    array<COLOR, 6>  centers;
 
     inline void updateCornerOrientationX(CORNER ind);
     inline void updateCornerOrientationZ(CORNER ind);
     inline void updateEdgeOrientationZ(EDGE ind);
 
     char getColor(COLOR color) const;
-    std::array<int, 3> getCornerPosition(int index, int orientation) const;
-    std::array<int, 2> getEdgePosition(int index, int orientation) const;
+    array<int, 3> getCornerPosition(int index, int orientation) const;
+    array<int, 2> getEdgePosition(int index, int orientation) const;
 
-    std::array<COLOR, 2> getEdgeColors(EDGE ind) const;
-    std::array<COLOR, 3> getCornerColors(CORNER ind) const;
-    COLOR getColor(FACE face, unsigned row, unsigned col) const;
+    array<COLOR, 2> getEdgeColors(EDGE ind) const;
+    array<COLOR, 3> getCornerColors(CORNER ind) const;
 
   public:
     CubeModel();
-    std::string toString() const;
-    bool isSolved() const;
-    std::string getMove(MOVE ind) const;
-    std::string reset();
-    std::string scramble();
-    void setCube();
+    string toString() const;
+    vector<string> getSolverOutput() const;
+    string getMove(MOVE ind) const;
+    string reset();
+    string scramble();
 
-    // Indexing methods.
-    uint8_t getEdgeIndex(EDGE ind) const;
-    uint8_t getEdgeOrientation(EDGE ind) const;
-    uint8_t getCornerIndex(CORNER ind) const;
-    uint8_t getCornerOrientation(CORNER ind) const;
+    COLOR getColor(FACE face, unsigned row, unsigned col) const;
+    string getFaceColor(COLOR input) const;
 
     CubeModel& move(MOVE ind);
-    CubeModel& invert(MOVE ind);
 
     // Face moves
     CubeModel& f();
     CubeModel& fPrime();
+    CubeModel& f2();
 
     CubeModel& b();
     CubeModel& bPrime();
+    CubeModel& b2();
 
     CubeModel& l();
     CubeModel& lPrime();
+    CubeModel& l2();
 
     CubeModel& r();
     CubeModel& rPrime();
+    CubeModel& r2();
 
     CubeModel& u();
     CubeModel& uPrime();
+    CubeModel& u2();
 
     CubeModel& d();
     CubeModel& dPrime();
+    CubeModel& d2();
 };
 
 #endif

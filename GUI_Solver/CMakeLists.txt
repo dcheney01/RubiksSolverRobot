@@ -29,9 +29,15 @@ set(PROJECT_SOURCES
         FaceView.h
         CubieView.h
 
-        #Solver Files
+        #Model Files
         CubeModel.cpp
         CubeModel.h
+
+        #Solver Files
+        Solver.cpp
+        Solver.h
+        movesimplify.cpp
+        movesimplify.h
 
         # Util Files
         CubeException.h

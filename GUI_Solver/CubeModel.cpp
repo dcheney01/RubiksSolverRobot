@@ -37,13 +37,13 @@ std::string CubeModel::reset()
 
 std::string CubeModel::scramble()
 {
+    RandomGenerator rand;
     std::string output = "";
     std::vector<int> moves = rand.getRand();
     for (auto i : moves) {
         move(static_cast<MOVE>(i));
         output += getMove(static_cast<MOVE>(i)) + " ";
     }
-
     return output;
 }
 
@@ -55,66 +55,88 @@ CubeModel& CubeModel::move(MOVE ind)
       return this->l();
     case MOVE::LPRIME:
       return this->lPrime();
+    case MOVE::L2:
+      return this->l2();
     case MOVE::R:
       return this->r();
     case MOVE::RPRIME:
       return this->rPrime();
+    case MOVE::R2:
+      return this->r2();
     case MOVE::U:
       return this->u();
     case MOVE::UPRIME:
       return this->uPrime();
+    case MOVE::U2:
+      return this->u2();
     case MOVE::D:
       return this->d();
     case MOVE::DPRIME:
       return this->dPrime();
+    case MOVE::D2:
+      return this->d2();
     case MOVE::F:
       return this->f();
     case MOVE::FPRIME:
       return this->fPrime();
+    case MOVE::F2:
+      return this->f2();
     case MOVE::B:
       return this->b();
     case MOVE::BPRIME:
       return this->bPrime();
+    case MOVE::B2:
+      return this->b2();
     default:
       throw CubeException("Invalid face turn index. (MOVE)");
   };
 }
 
-/**
- * Invert a move.
- * @param ind The move index.  The inverse will be applied.
- */
-CubeModel& CubeModel::invert(MOVE ind)
+std::string CubeModel::getFaceColor(COLOR input) const {
+    switch (input) {
+        case(COLOR::GREEN):
+            return "F";
+        case(COLOR::BLUE):
+            return "B";
+        case(COLOR::ORANGE):
+            return "U";
+        case(COLOR::RED):
+            return "D";
+        case(COLOR::WHITE):
+            return "R";
+        case(COLOR::YELLOW):
+            return "L";
+    }
+    return "ERROR";
+}
+
+std::vector<std::string> CubeModel::getSolverOutput() const
 {
-  switch (ind)
-  {
-    case MOVE::L:
-      return this->lPrime();
-    case MOVE::LPRIME:
-      return this->l();
-    case MOVE::R:
-      return this->rPrime();
-    case MOVE::RPRIME:
-      return this->r();
-    case MOVE::U:
-      return this->uPrime();
-    case MOVE::UPRIME:
-      return this->u();
-    case MOVE::D:
-      return this->dPrime();
-    case MOVE::DPRIME:
-      return this->d();
-    case MOVE::F:
-      return this->fPrime();
-    case MOVE::FPRIME:
-      return this->f();
-    case MOVE::B:
-      return this->bPrime();
-    case MOVE::BPRIME:
-      return this->b();
-    default:
-      throw CubeException("Invalid face turn index. (INVERT)");
-  }
+    std::vector<std::string> output = std::vector<std::string> (20);
+    //Edges
+    output[0] = getFaceColor(getColor(FACE::UP, 2, 1)) + getFaceColor(getColor(FACE::FRONT, 0, 1));
+    output[1] = getFaceColor(getColor(FACE::UP, 1, 2)) + getFaceColor(getColor(FACE::RIGHT, 0, 1));
+    output[2] = getFaceColor(getColor(FACE::UP, 0, 1)) + getFaceColor(getColor(FACE::BACK, 0, 1));
+    output[3] = getFaceColor(getColor(FACE::UP, 1, 0)) + getFaceColor(getColor(FACE::LEFT, 0, 1));
+    output[4] = getFaceColor(getColor(FACE::DOWN, 0, 1)) + getFaceColor(getColor(FACE::FRONT, 2, 1));
+    output[5] = getFaceColor(getColor(FACE::DOWN, 1, 2)) + getFaceColor(getColor(FACE::RIGHT, 2, 1));
+    output[6] = getFaceColor(getColor(FACE::DOWN, 2, 1)) + getFaceColor(getColor(FACE::BACK, 2, 1));
+    output[7] = getFaceColor(getColor(FACE::DOWN, 1, 0)) + getFaceColor(getColor(FACE::LEFT, 2, 1));
+    output[8] = getFaceColor(getColor(FACE::FRONT, 1, 2)) + getFaceColor(getColor(FACE::RIGHT, 1, 0));
+    output[9] = getFaceColor(getColor(FACE::FRONT, 1, 0)) + getFaceColor(getColor(FACE::LEFT, 1, 2));
+    output[10] = getFaceColor(getColor(FACE::BACK, 1, 0)) + getFaceColor(getColor(FACE::RIGHT, 1, 2));
+    output[11] = getFaceColor(getColor(FACE::BACK, 1, 2)) + getFaceColor(getColor(FACE::LEFT, 1, 0));
+    //Corners
+    output[12] = getFaceColor(getColor(FACE::UP, 2, 2)) + getFaceColor(getColor(FACE::FRONT, 0, 2)) + getFaceColor(getColor(FACE::RIGHT, 0, 0));
+    output[13] = getFaceColor(getColor(FACE::UP, 0, 2)) + getFaceColor(getColor(FACE::RIGHT, 0, 2)) + getFaceColor(getColor(FACE::BACK, 0, 0));
+    output[14] = getFaceColor(getColor(FACE::UP, 0, 0)) + getFaceColor(getColor(FACE::BACK, 0, 2)) + getFaceColor(getColor(FACE::LEFT, 0, 0));
+    output[15] = getFaceColor(getColor(FACE::UP, 2, 0)) + getFaceColor(getColor(FACE::LEFT, 0, 2)) + getFaceColor(getColor(FACE::FRONT, 0, 0));
+    output[16] = getFaceColor(getColor(FACE::DOWN, 0, 2)) + getFaceColor(getColor(FACE::RIGHT, 2, 0)) + getFaceColor(getColor(FACE::FRONT, 2, 2));
+    output[17] = getFaceColor(getColor(FACE::DOWN, 0, 0)) + getFaceColor(getColor(FACE::FRONT, 2, 0)) + getFaceColor(getColor(FACE::LEFT, 2, 2));
+    output[18] = getFaceColor(getColor(FACE::DOWN, 2, 0)) + getFaceColor(getColor(FACE::LEFT, 2, 0)) + getFaceColor(getColor(FACE::BACK, 2, 2));
+    output[19] = getFaceColor(getColor(FACE::DOWN, 2, 2)) + getFaceColor(getColor(FACE::BACK, 2, 0)) + getFaceColor(getColor(FACE::RIGHT, 2, 2));
+
+    return output;
 }
 
 /**
@@ -128,83 +150,44 @@ std::string CubeModel::getMove(MOVE ind) const
       return "L";
     case MOVE::LPRIME:
       return "L'";
+    case MOVE::L2:
+      return "L2";
     case MOVE::R:
       return "R";
     case MOVE::RPRIME:
       return "R'";
+    case MOVE::R2:
+      return "R2";
     case MOVE::U:
       return "U";
     case MOVE::UPRIME:
       return "U'";
+    case MOVE::U2:
+      return "U2";
     case MOVE::D:
       return "D";
     case MOVE::DPRIME:
       return "D'";
+    case MOVE::D2:
+      return "D2";
     case MOVE::F:
       return "F";
     case MOVE::FPRIME:
       return "F'";
+    case MOVE::F2:
+      return "F2";
     case MOVE::B:
       return "B";
     case MOVE::BPRIME:
       return "B'";
+    case MOVE::B2:
+      return "B2";
     default:
       throw CubeException("Invalid face turn index. (GET MOVE)");
   };
 }
 
 
-/**
-* Get the cubie index of an edge cubie.
-*/
-uint8_t CubeModel::getEdgeIndex(EDGE ind) const
-{
-return this->edges[(unsigned)ind].index;
-}
-
-/**
-* Get the orientation of an edge cubie.
-*/
-uint8_t CubeModel::getEdgeOrientation(EDGE ind) const
-{
-return this->edges[(unsigned)ind].orientation;
-}
-
-/**
-* Get the cubie index of a corner cubie.
-*/
-uint8_t CubeModel::getCornerIndex(CORNER ind) const
-{
-return this->corners[(unsigned)ind].index;
-}
-
-/**
-* Get the orientation of a corner cubie.
-*/
-uint8_t CubeModel::getCornerOrientation(CORNER ind) const
-{
-return this->corners[(unsigned)ind].orientation;
-}
-
-/**
-* Check if the cube is in a solved state.
-*/
-bool CubeModel::isSolved() const
-{
-    for (unsigned i = 0; i < this->corners.size(); ++i)
-    {
-      if (this->corners[i].index != i || this->corners[i].orientation != 0)
-        return false;
-    }
-
-    for (unsigned i = 0; i < this->edges.size(); ++i)
-    {
-      if (this->edges[i].index != i || this->edges[i].orientation != 0)
-        return false;
-    }
-
-    return true;
-}
 
 /**
    * Get the edge colors at an index.
@@ -305,7 +288,7 @@ std::array<CubeModel::COLOR, 2> CubeModel::getEdgeColors(
       i1 = 1;
       i2 = 2;
 
-      // A quarter turn of U or D swaps the two other colors.
+      // A quarter turn of U or D std::swaps the two other colors.
       if ((corner.index + (unsigned)ind) % 2 == 1)
         std::swap(i1, i2);
     }
@@ -882,6 +865,78 @@ CubeModel& CubeModel::dPrime()
     this->edges[(unsigned)EDGE::DB]      = hold;
 
     return *this;
+}
+
+
+CubeModel& CubeModel::u2()
+{
+  std::swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::URF]);
+  std::swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::ULF]);
+
+  std::swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::UF]);
+  std::swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::UL]);
+
+  return *this;
+}
+
+
+CubeModel& CubeModel::l2()
+{
+  std::swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::ULF]);
+  std::swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DLF]);
+
+  std::swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::FL]);
+  std::swap(this->edges[(unsigned)EDGE::UL],      this->edges[(unsigned)EDGE::DL]);
+
+  return *this;
+}
+
+
+CubeModel& CubeModel::f2()
+{
+  std::swap(this->corners[(unsigned)CORNER::ULF], this->corners[(unsigned)CORNER::DRF]);
+  std::swap(this->corners[(unsigned)CORNER::URF], this->corners[(unsigned)CORNER::DLF]);
+
+  std::swap(this->edges[(unsigned)EDGE::UF],      this->edges[(unsigned)EDGE::DF]);
+  std::swap(this->edges[(unsigned)EDGE::FL],      this->edges[(unsigned)EDGE::FR]);
+
+  return *this;
+}
+
+
+CubeModel& CubeModel::r2()
+{
+  std::swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::URF]);
+  std::swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DRF]);
+
+  std::swap(this->edges[(unsigned)EDGE::BR],      this->edges[(unsigned)EDGE::FR]);
+  std::swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::DR]);
+
+  return *this;
+}
+
+
+CubeModel& CubeModel::b2()
+{
+  std::swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DRB]);
+  std::swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DLB]);
+
+  std::swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::DB]);
+  std::swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::BR]);
+
+  return *this;
+}
+
+
+CubeModel& CubeModel::d2()
+{
+  std::swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::DRF]);
+  std::swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::DLF]);
+
+  std::swap(this->edges[(unsigned)EDGE::DB],      this->edges[(unsigned)EDGE::DF]);
+  std::swap(this->edges[(unsigned)EDGE::DR],      this->edges[(unsigned)EDGE::DL]);
+
+  return *this;
 }
 
 std::string CubeModel::toString() const {
